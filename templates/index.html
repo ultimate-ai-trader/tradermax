@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" href="/static/img/icon.png">
+    <meta name="theme-color" content="#00ffff">
+    <meta charset="UTF-8">
+    <title>Bitfinex Bot Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Bitfinex Bot Dashboard</h1>
+        <div id="status">Loading bot status...</div>
+        <button onclick="startBot()">Start Bot</button>
+        <button onclick="stopBot()">Stop Bot</button>
+        <button onclick="restartBot()">Restart Bot</button>
+    </div>
+<script src="/static/js/script.js"></script>
+
+<div class="settings-panel">
+  <h3>⚙️ Настройки</h3>
+  <label>Търговска двойка:
+    <select id="symbolSelect">
+      <option value="LTC/USD">LTC/USD</option>
+      <option value="BTC/USD">BTC/USD</option>
+      <option value="ETH/USD">ETH/USD</option>
+    </select>
+  </label><br>
+  <label>Таймфрейм:
+    <select id="timeframeSelect">
+      <option value="1m">1 минута</option>
+      <option value="5m">5 минути</option>
+      <option value="15m">15 минути</option>
+    </select>
+  </label><br>
+  <label>Стратегия:
+    <select id="strategySelect">
+      <option value="ai_brain">AI Brain</option>
+      <option value="technical">Техническа</option>
+      <option value="sentiment">Sentiment</option>
+    </select>
+  </label><br>
+  <button onclick="applySettings()">💾 Запази настройките</button>
+</div>
+
+<script>
+function applySettings() {
+  const symbol = document.getElementById('symbolSelect').value;
+  const timeframe = document.getElementById('timeframeSelect').value;
+  const strategy = document.getElementById('strategySelect').value;
+
+  fetch('/apply_settings', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ symbol, timeframe, strategy })
+  })
+  .then(res => res.json())
+  .then(data => alert('Настройките са приложени!'))
+  .catch(err => alert('Грешка при прилагане на настройките.'));
+}
+</script>
+
+</body>
+</html>
